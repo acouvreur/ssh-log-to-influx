@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  ssh-log-to-influx:
+    image: acouvreur/influx-log-to-influx
+    build: ./
+    environment: 
+      - INFLUX_URL=influxdb
+      - INFLUX_DB=telegraf
+    networks: 
+      - traefik
+    ports: 
+      - 7070:7070/tcp
+
+networks:
+  traefik:
+    external: true
+    name: traefik
