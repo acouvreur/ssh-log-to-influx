@@ -23,6 +23,9 @@ server.on('connection', (socket) => {
 	logger.info(`CONNECTED: ${socket.remoteAddress}:${socket.remotePort}`)
 
 	socket.on('data', async (data) => {
+		
+		socket.destroy();
+
 		logger.debug('Received data', data.toString())
 
 		const {ip, port, username} = parser(data.toString())
@@ -43,6 +46,7 @@ server.on('connection', (socket) => {
 				}
 			}
 		]);
+
 	})
 
 	socket.on('close', () => {
