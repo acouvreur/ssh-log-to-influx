@@ -31,7 +31,7 @@ server.on('connection', (socket) => {
 		const {ip, port, username} = parser(data.toString())
 		logger.debug(`Parsed ${username} ${ip}:${port}`)
 
-		const geohashed = await geohash(ip);
+		const {geohash: geohashed, location} = await geohash(ip);
 		logger.debug(`Geohashed ${username} ${ip}:${port}`)
 		influx.writePoints([
 			{
@@ -41,9 +41,10 @@ server.on('connection', (socket) => {
 				},
 				tags: {
 					geohash: geohashed,
-					username: username,
-					port: port,
-					ip: ip
+					username,
+					port,
+					ip,
+					location
 				}
 			}
 		]);
