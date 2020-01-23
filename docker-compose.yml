@@ -4,6 +4,7 @@ services:
   ssh-log-to-influx:
     image: acouvreur/influx-log-to-influx
     build: ./
+    restart: always
     environment: 
       - INFLUX_URL=influxdb
       - INFLUX_DB=telegraf

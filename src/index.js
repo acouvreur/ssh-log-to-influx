@@ -1,16 +1,11 @@
-const geohash = require('ngeohash');
-const axios = require('axios');
-const Influx = require('influx');
+import parser from './parser'
+import geohash from './geohash'
+import Influx from 'influx'
+import log4js from 'log4js'
+import net from 'net';
 
-// TCP handles
-const net = require('net');
-const port = 7070;
-const host = '0.0.0.0';
-
-const server = net.createServer();
-server.listen(port, host, () => {
-	console.log('TCP Server is running on port ' + port + '.');
-});
+let logger = log4js.getLogger();
+logger.level = 'debug';
 
 // InfluxDB Initialization.
 const influx = new Influx.InfluxDB({
@@ -18,50 +13,43 @@ const influx = new Influx.InfluxDB({
 	database: process.env.INFLUX_DB
 });
 
-let sockets = [];
+const port = process.env.PORT || 7070;
+const host = '0.0.0.0';
 
-server.on('connection', function(sock) {
-	console.log('CONNECTED: ' + sock.remoteAddress + ':' + sock.remotePort);
-	sockets.push(sock);
+const server = net.createServer();
 
-	sock.on('data', function(data) {
-		//console.log(data);
-		let message = JSON.parse('' + data);
-		// API Initialization.
-		const instance = axios.create({
-			baseURL: 'http://ip-api.com/json/'
-		});
-		instance
-			.get(`/${message.ip}`)
-			.then(function(response) {
-				const apiResponse = response.data;
-				influx.writePoints([
-					{
-						measurement: 'geossh',
-						fields: {
-							value: 1
-						},
-						tags: {
-							geohash: geohash.encode(apiResponse.lat, apiResponse.lon),
-							username: message.username,
-							port: message.port,
-							ip: message.ip
-						}
-					}
-				]);
-				console.log('Intruder added');
-			})
-			.catch(function(error) {
-				console.log(error);
-			});
+server.on('connection', (socket) => {
+
+	logger.info(`CONNECTED: ${socket.remoteAddress}:${socket.remotePort}`)
+
+	socket.on('data', async (data) => {
+		logger.debug('Received data', data.toString())
+
+		const {ip, port, username} = parser(data.toString())
+		logger.debug(`Parsed ${username} ${ip}:${port}`)
+
+		const geohashed = await geohash(ip);
+		influx.writePoints([
+			{
+				measurement: 'geossh',
+				fields: {
+					value: 1
+				},
+				tags: {
+					geohash: geohashed,
+					username: username,
+					port: port,
+					ip: ip
+				}
+			}
+		]);
+	})
+
+	socket.on('close', () => {
+		logger.info(`CLOSED: ${socket.remoteAddress}:${socket.remotePort}`)
 	});
+});
 
-	// Add a 'close' event handler to this instance of socket
-	sock.on('close', function(data) {
-		let index = sockets.findIndex(function(o) {
-			return o.remoteAddress === sock.remoteAddress && o.remotePort === sock.remotePort;
-		});
-		if (index !== -1) sockets.splice(index, 1);
-		console.log('CLOSED: ' + sock.remoteAddress + ' ' + sock.remotePort);
-	});
+server.listen(port, host, () => {
+	logger.info(`TCP Server is running on port ${port}.`);
 });
