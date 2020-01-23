@@ -4,6 +4,7 @@
   "description": "Sends SSH authentication logs to influxdb with geohashing IP",
   "main": "src/index.js",
   "scripts": {
+    "start": "babel-node src/index.js",
     "test": "jest"
   },
   "repository": {
@@ -22,6 +23,7 @@
   },
   "homepage": "https://github.com/acouvreur/ssh-log-to-influx#readme",
   "dependencies": {
+    "@babel/polyfill": "^7.8.3",
     "@types/jest": "^24.9.0",
     "axios": "^0.19.1",
     "influx": "^5.5.1",
@@ -30,7 +32,11 @@
     "ngeohash": "^0.6.3"
   },
   "devDependencies": {
+    "@babel/cli": "^7.8.3",
+    "@babel/core": "^7.8.3",
+    "@babel/node": "^7.8.3",
     "@babel/plugin-transform-modules-commonjs": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
     "jest": "^24.9.0"
   }
 }

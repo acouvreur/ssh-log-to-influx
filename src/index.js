@@ -1,16 +1,16 @@
 import parser from './parser'
 import geohash from './geohash'
-import Influx from 'influx'
 import log4js from 'log4js'
 import net from 'net';
 
 let logger = log4js.getLogger();
 logger.level = 'debug';
 
+const Influx = require('influx');
 // InfluxDB Initialization.
 const influx = new Influx.InfluxDB({
-	host: process.env.INFLUX_URL,
-	database: process.env.INFLUX_DB
+	host: process.env.INFLUX_URL || '127.0.0.1',
+	database: process.env.INFLUX_DB || 'influx'
 });
 
 const port = process.env.PORT || 7070;
