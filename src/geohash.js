@@ -14,7 +14,7 @@ const instance = axios.create({
  * @param {String} ip IP Address, can be IPv4 or IPv6
  */
 const geohash = async (ip) => {
-    const {latitude, longitude} = await retrieveLocationFromAPI();
+    const {latitude, longitude} = await retrieveLocationFromAPI(ip);
     return ngeohash.encode(latitude, longitude)
 }
 

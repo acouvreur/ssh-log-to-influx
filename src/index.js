@@ -32,6 +32,7 @@ server.on('connection', (socket) => {
 		logger.debug(`Parsed ${username} ${ip}:${port}`)
 
 		const geohashed = await geohash(ip);
+		logger.debug(`Geohashed ${username} ${ip}:${port}`)
 		influx.writePoints([
 			{
 				measurement: 'geossh',
