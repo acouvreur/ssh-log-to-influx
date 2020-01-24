@@ -29,6 +29,7 @@ async function retrieveLocationFromAPI(ip) {
     }
 
     const {lon, lat, regionName, city} = data;
+    logger.debug('Received data from API', data)
     return {longitude: lon, latitide: lat, location: `${regionName}, ${city}`}
 }
 
