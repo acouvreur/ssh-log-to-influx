@@ -108,6 +108,7 @@ async function doApiCall(ip) {
 
 	// Memoization, prevent API call for the same IP
 	if(clients[ip]) {
+		logger.debug(`Not making an API Call for ${ip}, using in memory from previous calls`, clients[ip])
 		return clients[ip]
 	}
 
