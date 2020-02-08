@@ -1,9 +1,9 @@
 import parseAuthFailedMessage from './parser.js'
 
 const IPv6AuthMessage = 'Failed password for username from 2a01:cb1d:620:7a00:6cb4:1bd9:29b3:a9a0 port 61832 ssh2'
-const IPv6AuthMessageInvalidUsername = 'Failed password for invalid username from 2a01:cb1d:620:7a00:6cb4:1bd9:29b3:a9a0 port 61832 ssh2'
+const IPv6AuthMessageInvalidUsername = 'Failed password for invalid user username from 2a01:cb1d:620:7a00:6cb4:1bd9:29b3:a9a0 port 61832 ssh2'
 const IPv4AuthMessage = 'Failed password for username from 192.168.0.0 port 61832 ssh2'
-const IPv4AuthMessageInvalidUsername = 'Failed password for invalid username from 192.168.0.0 port 61832 ssh2'
+const IPv4AuthMessageInvalidUsername = 'Failed password for invalid user username from 192.168.0.0 port 61832 ssh2'
 
 describe('A parser', () => {
     it('should extract username from \'Failed password for username from 2a01:cb1d:620:7a00:6cb4:1bd9:29b3:a9a0 port 61832 ssh2\'', () => {
