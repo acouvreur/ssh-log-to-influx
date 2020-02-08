@@ -2,7 +2,7 @@ import axios from 'axios'
 import log4js from 'log4js'
 
 let logger = log4js.getLogger('geohash');
-logger.level = 'debug';
+logger.level = 'api';
 
 const API_URL = 'http://ip-api.com/json/'
 
