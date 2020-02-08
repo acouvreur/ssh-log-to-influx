@@ -15,7 +15,7 @@
  * @returns {AuthMessageEntry}
  */
 const parseAuthFailedMessage = (message) => {
-    const regex = /\w+ \w+ \w+ (?<username>\w+) \w+ (?<ip>.*) \w+ (?<port>\w+) \w+/;
+    const regex = /\w+ \w+ \w+ ?\w+ (?<username>\w+) \w+ (?<ip>.*) \w+ (?<port>\w+) \w+/;
     return regex.exec(message).groups;
 } 
 
