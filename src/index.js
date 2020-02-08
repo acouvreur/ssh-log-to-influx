@@ -1,8 +1,9 @@
-import parser from 'parser'
 import log4js from 'log4js'
 import net from 'net';
 import ngeohash from 'ngeohash'
-import retrieveLocationFromAPI from 'api';
+
+import parser from './parser'
+import retrieveLocationFromAPI from './api';
 
 let logger = log4js.getLogger();
 logger.level = 'debug';
@@ -63,7 +64,7 @@ server.on('connection', (socket) => {
 			logger.error('No data retrieved, cannot continue')
 			return;
 		}
-		
+
 		const geohashed = ngeohash.encode(ipLocation.lat, ipLocation.lon);
 		logger.debug(`Geohashing with lat: ${ipLocation.lat}, lon: ${ipLocation.lon}: ${geohashed}`)
 
