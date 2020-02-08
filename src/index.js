@@ -51,7 +51,8 @@ server.on('connection', (socket) => {
 
 	socket.on('data', async (data) => {
 		
-		socket.destroy();
+		socket.end()
+		socket.destroy()
 
 		logger.debug('Received data', data.toString())
 
@@ -62,7 +63,7 @@ server.on('connection', (socket) => {
 
 		if(!ipLocation) {
 			logger.error('No data retrieved, cannot continue')
-			return;
+			return
 		}
 
 		const geohashed = ngeohash.encode(ipLocation.lat, ipLocation.lon);
@@ -107,15 +108,15 @@ async function doApiCall(ip) {
 
 	// Memoization, prevent API call for the same IP
 	if(clients[ip]) {
-		return clients[ip];
+		return clients[ip]
 	}
 
 	try {
 		const data = await retrieveLocationFromAPI(ip)
-		clients[ip] = data;
-		return data;
+		clients[ip] = data
+		return data
 	} catch(e) {
-		return null;
+		return null
 	}
 	
 }
