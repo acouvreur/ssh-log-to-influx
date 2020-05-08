@@ -26,7 +26,7 @@ if $programname == 'sshd' then {
 
 ## Start the TCP server
 
-Change environement variables inside `docker-compose.yml`
+Change environment variables inside `docker-compose.yml`
 
 `docker-compose build`
 
