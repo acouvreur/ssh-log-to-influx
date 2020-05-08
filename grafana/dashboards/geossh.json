@@ -1,0 +1,383 @@
+{
+    "annotations": {
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "type": "dashboard"
+            }
+        ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": 9,
+    "links": [],
+    "panels": [
+        {
+            "circleMaxSize": 30,
+            "circleMinSize": 2,
+            "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+            ],
+            "datasource": null,
+            "decimals": 0,
+            "esGeoPoint": "geohash",
+            "esLocationName": "location",
+            "esMetric": "value",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {}
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 13,
+                "w": 15,
+                "x": 0,
+                "y": 0
+            },
+            "hideEmpty": false,
+            "hideZero": false,
+            "id": 2,
+            "initialZoom": "2",
+            "locationData": "geohash",
+            "mapCenter": "Last GeoHash",
+            "mapCenterLatitude": 50.262601375579834,
+            "mapCenterLongitude": 127.52798795700073,
+            "maxDataPoints": 1,
+            "mouseWheelZoom": true,
+            "showLegend": true,
+            "stickyLabels": false,
+            "tableQueryOptions": {
+                "geohashField": "geohash",
+                "latitudeField": "latitude",
+                "longitudeField": "longitude",
+                "metricField": "metric",
+                "queryType": "geohash"
+            },
+            "targets": [
+                {
+                    "groupBy": [
+                        {
+                            "params": [
+                                "geohash"
+                            ],
+                            "type": "tag"
+                        }
+                    ],
+                    "hide": false,
+                    "measurement": "geossh",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT sum( \"value\") as value FROM \"geossh\" GROUP BY \"location\", \"ip\", \"username\", \"geohash\"",
+                    "rawQuery": true,
+                    "refId": "A",
+                    "resultFormat": "table",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                }
+            ],
+            "thresholds": "0,10",
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "SSH Attacks Location",
+            "type": "grafana-worldmap-panel",
+            "unitPlural": "",
+            "unitSingle": "",
+            "unitSingular": "",
+            "valueName": "total"
+        },
+        {
+            "columns": [],
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {}
+                },
+                "overrides": []
+            },
+            "fontSize": "100%",
+            "gridPos": {
+                "h": 13,
+                "w": 9,
+                "x": 15,
+                "y": 0
+            },
+            "id": 4,
+            "pageSize": null,
+            "showHeader": true,
+            "sort": {
+                "col": 5,
+                "desc": true
+            },
+            "styles": [
+                {
+                    "alias": "Time",
+                    "align": "auto",
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "pattern": "Time",
+                    "type": "date"
+                },
+                {
+                    "alias": "Tries",
+                    "align": "auto",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "decimals": 0,
+                    "pattern": "sum",
+                    "thresholds": [],
+                    "type": "number",
+                    "unit": "short"
+                }
+            ],
+            "targets": [
+                {
+                    "groupBy": [
+                        {
+                            "params": [
+                                "location"
+                            ],
+                            "type": "tag"
+                        },
+                        {
+                            "params": [
+                                "ip"
+                            ],
+                            "type": "tag"
+                        },
+                        {
+                            "params": [
+                                "username"
+                            ],
+                            "type": "tag"
+                        },
+                        {
+                            "params": [
+                                "geohash"
+                            ],
+                            "type": "tag"
+                        }
+                    ],
+                    "measurement": "geossh",
+                    "orderByTime": "ASC",
+                    "policy": "default",
+                    "query": "SELECT sum( \"value\"), \"time\" FROM \"geossh\" GROUP BY \"location\", \"ip\", \"username\", \"geohash\"",
+                    "rawQuery": true,
+                    "refId": "A",
+                    "resultFormat": "table",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Failed SSH Attempts",
+            "transform": "table",
+            "type": "table-old"
+        },
+        {
+            "aliasColors": {},
+            "bars": true,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {}
+                },
+                "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 9,
+                "w": 24,
+                "x": 0,
+                "y": 13
+            },
+            "hiddenSeries": false,
+            "id": 6,
+            "legend": {
+                "alignAsTable": true,
+                "avg": false,
+                "current": false,
+                "max": false,
+                "min": false,
+                "rightSide": true,
+                "show": true,
+                "total": false,
+                "values": false
+            },
+            "lines": false,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "alias": "$tag_country: $tag_ip",
+                    "groupBy": [
+                        {
+                            "params": [
+                                "1h"
+                            ],
+                            "type": "time"
+                        },
+                        {
+                            "params": [
+                                "ip"
+                            ],
+                            "type": "tag"
+                        },
+                        {
+                            "params": [
+                                "country"
+                            ],
+                            "type": "tag"
+                        },
+                        {
+                            "params": [
+                                "null"
+                            ],
+                            "type": "fill"
+                        }
+                    ],
+                    "measurement": "geossh",
+                    "orderByTime": "ASC",
+                    "policy": "autogen",
+                    "refId": "A",
+                    "resultFormat": "time_series",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "field"
+                            },
+                            {
+                                "params": [],
+                                "type": "last"
+                            }
+                        ]
+                    ],
+                    "tags": []
+                }
+            ],
+            "thresholds": [
+                {
+                    "colorMode": "critical",
+                    "fill": true,
+                    "line": true,
+                    "op": "gt",
+                    "value": 0
+                }
+            ],
+            "timeFrom": "7d",
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "SSH Attacks by IP and Country",
+            "tooltip": {
+                "shared": false,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        }
+    ],
+    "refresh": "",
+    "schemaVersion": 25,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+        "list": []
+    },
+    "time": {
+        "from": "now-90d",
+        "to": "now"
+    },
+    "timepicker": {
+        "refresh_intervals": [
+            "10s",
+            "30s",
+            "1m",
+            "5m",
+            "15m",
+            "30m",
+            "1h",
+            "2h",
+            "1d"
+        ]
+    },
+    "timezone": "",
+    "title": "Geohash SSH",
+    "uid": "Qg1DRtWgz",
+    "version": 15
+}

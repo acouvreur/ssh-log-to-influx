@@ -1,0 +1,39 @@
+version: "3.7"
+
+services:
+  ssh-log-to-influx:
+    image: acouvreur/influx-log-to-influx
+    build: ./
+    restart: always
+    environment: 
+      - INFLUX_URL=influxdb
+      - INFLUX_DB=telegraf
+    ports: 
+      - 7070:7070/tcp
+
+  #----------------------------------------------#
+  # InfluxDB : time series database
+  #----------------------------------------------#
+  influxdb:
+    image: influxdb:latest
+    volumes:
+      - influxdb_data:/var/lib/influxdb
+
+  #----------------------------------------------#
+  # Grafana : analytics and monitoring
+  #----------------------------------------------#
+  grafana:
+    image: "grafana/grafana:master"
+    environment: 
+      - GF_INSTALL_PLUGINS=grafana-worldmap-panel
+    ports: 
+      - 3000:3000
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/config.ini:/etc/grafana/config.ini
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+        
+volumes:
+  influxdb_data:
+  grafana_data:

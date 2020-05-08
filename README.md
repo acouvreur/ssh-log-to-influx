@@ -1,9 +1,13 @@
 # Visualize bruteforce SSH attacker's location in real time
 
+## Preview
+
+![Dashboard](./dashboard.png)
+
 ## Prerequisites
 
-- An InfluxDB instance
-- A Grafana instance
+- An InfluxDB instance (or use docker-compose.standalone.yml)
+- A Grafana instance (or use docker-compose.standalone.yml)
 - Docker
 - Rsyslog
 
