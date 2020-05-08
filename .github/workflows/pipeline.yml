@@ -1,0 +1,30 @@
+name: Build, test and deploy
+on:
+  push:
+    paths-ignore:
+      - "*.md"
+env:
+  DOCKER_REPOSITORY: acouvreur/ssh-log-to-influx
+  CI: true
+
+jobs:
+  build:
+    name: Build, test, Docker artifact and deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Test
+        run: npm test
+
+      - name: Docker build and push
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: ${{ env.DOCKER_REPOSITORY }}
+          tag_with_ref: true
+          add_git_labels: true
