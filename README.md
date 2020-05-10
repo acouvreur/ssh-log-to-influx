@@ -1,5 +1,7 @@
 # Visualize bruteforce SSH attacker's location in real time
 
+![Build, test and deploy](https://github.com/acouvreur/ssh-log-to-influx/workflows/Build,%20test%20and%20deploy/badge.svg)
+
 Thanks to Schkn for its original post https://devconnected.com/geolocating-ssh-hackers-in-real-time/
 
 ## Preview
