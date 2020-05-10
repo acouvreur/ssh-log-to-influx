@@ -30,8 +30,21 @@ if $programname == 'sshd' then {
 
 ## Start the TCP server
 
-Change environment variables inside `docker-compose.yml`
+### With a bundled InfluxDB and Grafana
 
-`docker-compose build`
+`docker-compose -f docker-compose.standalone.yml up`
+
+### As a Docker service (will restart on failure)
+
+1. Change INFLUX_URL
+2. Change INFLUX_DB
+3. Change network if needed to access an Influx database within a Docker network
 
 `docker-compose up -d`
+
+## Test the TCP server
+
+1. `docker-compose -f docker-compose.standalone.yml up`
+2. `netcat localhost 7070`
+3. type: `Failed password for username from 206.253.167.10 port 11111 ssh2`
+4. Data should be parsed and added
