@@ -1,14 +1,11 @@
 import axios from 'axios'
 import log4js from 'log4js'
+import Axios from 'axios';
 
 let logger = log4js.getLogger('geohash');
 logger.level = 'api';
 
 const API_URL = 'http://ip-api.com/json/'
-
-const instance = axios.create({
-    baseURL: API_URL
-});
 
 /**
  * @typedef APIResponse
@@ -32,7 +29,7 @@ const instance = axios.create({
  */
 async function retrieveLocationFromAPI(ip) {
 
-    const {data, status, statusText} = await instance.get(`/${ip}`)
+    const {data, status, statusText} = await Axios.get(`${API_URL}/${ip}`)
     if(status !== 200 || data.status !== 'success') {
         logger.error(`Unsuccessful request (${status}): ${statusText}`, data)
         throw new Error(`Unsuccessful request (${status}): ${data}`)
