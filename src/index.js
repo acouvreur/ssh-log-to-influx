@@ -11,9 +11,11 @@ logger.level = 'debug';
 const Influx = require('influx');
 // InfluxDB Initialization.
 const influx = new Influx.InfluxDB({
-	host: process.env.INFLUX_URL || '127.0.0.1',
-	database: process.env.INFLUX_DB || 'influx'
+	host: process.env.INFLUX_URL,
+	database: process.env.INFLUX_DB
 });
+
+influx.createDatabase(process.env.INFLUX_DB);
 
 const port = process.env.PORT || 7070;
 
