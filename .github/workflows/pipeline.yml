@@ -31,4 +31,4 @@ jobs:
           repository: ${{ env.DOCKER_REPOSITORY }}
           tag_with_ref: true
           add_git_labels: true
-          push: ${{ contains(github.ref, master') }}
+          push: ${{ contains(github.ref, 'master') }}
