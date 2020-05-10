@@ -3,7 +3,7 @@ import net from 'net';
 import ngeohash from 'ngeohash'
 
 import parser from './parser'
-import retrieveLocationFromAPI from './api';
+import doApiCall from './api';
 
 let logger = log4js.getLogger();
 logger.level = 'debug';
@@ -16,14 +16,6 @@ const influx = new Influx.InfluxDB({
 });
 
 const port = process.env.PORT || 7070;
-const host = '0.0.0.0';
- 
-/**
- * 
- * Memoization to prevent API Calls for the same IP
- * @type {Object.<string, import('api').APIResponse>}
- */
-const clients = {};
 
 const server = net.createServer();
 
@@ -81,25 +73,3 @@ server.on('connection', (socket) => {
 server.listen(port, () => {
 	logger.info(`TCP Server is running on port ${port}.`);
 });
-
-/**
- * @param {string} ip 
- * @returns {Promise<APIResponse>}
- */
-async function doApiCall(ip) {
-
-	// Memoization, prevent API call for the same IP
-	if(clients[ip]) {
-		logger.debug(`Not making an API Call for ${ip}, using in memory from previous calls`, clients[ip])
-		return clients[ip]
-	}
-
-	try {
-		const data = await retrieveLocationFromAPI(ip)
-		clients[ip] = data
-		return data
-	} catch(e) {
-		return null
-	}
-	
-}

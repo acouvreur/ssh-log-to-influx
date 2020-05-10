@@ -8,6 +8,13 @@ logger.level = 'api';
 const API_URL = 'http://ip-api.com/json/'
 
 /**
+ * 
+ * Memoization to prevent API Calls for the same IP
+ * @type {Object.<string, APIResponse>}
+ */
+const clients = {};
+
+/**
  * @typedef APIResponse
  * @property {string} status
  * @property {string} country
@@ -41,7 +48,7 @@ async function retrieveLocationFromAPI(ip) {
     // defaulting every empty string to 'none'
     // see https://github.com/acouvreur/ssh-log-to-influx/issues/35
     for(const key in data) {
-        if(data[key] instanceof String && data[key] === '') {
+        if(data[key] === '') {
             data[key] = 'none'
         }
     }
@@ -49,4 +56,29 @@ async function retrieveLocationFromAPI(ip) {
     return data
 }
 
-export default retrieveLocationFromAPI
+
+/**
+ * @param {string} ip 
+ * @returns {Promise<APIResponse>}
+ */
+async function doApiCall(ip) {
+
+	// Memoization, prevent API call for the same IP
+	if(clients[ip]) {
+		logger.debug(`Not making an API Call for ${ip}, using in memory from previous calls`, clients[ip])
+		return clients[ip]
+	}
+
+	try {
+		const data = await retrieveLocationFromAPI(ip)
+		clients[ip] = data
+		return data
+	} catch(e) {
+        logger.error(e);
+		return null
+	}
+	
+}
+
+export default doApiCall
+export { clients }
