@@ -39,6 +39,16 @@ async function retrieveLocationFromAPI(ip) {
     }
 
     logger.debug('Received data from API', data)
+
+    // Sometimes the API returns empty values
+    // defaulting every empty string to 'none'
+    // see https://github.com/acouvreur/ssh-log-to-influx/issues/35
+    for(const key in data) {
+        if(data[key] instanceof String && data[key] === '') {
+            data[key] = 'none'
+        }
+    }
+
     return data
 }
 
