@@ -17,29 +17,11 @@ const influx = new Influx.InfluxDB({
 
 const port = process.env.PORT || 7070;
 const host = '0.0.0.0';
-
-/**
- * @typedef {Object} APIResponse
- * @property {string} status
- * @property {string} country
- * @property {string} countryCode
- * @property {string} region
- * @property {string} regionName
- * @property {string} city
- * @property {string} zip
- * @property {number} lat
- * @property {number} lon
- * @property {string} timezone
- * @property {string} isp
- * @property {string} org
- * @property {string} as
- * @property {string} query
- */
  
 /**
  * 
  * Memoization to prevent API Calls for the same IP
- * @type {Object.<string, APIResponse>}
+ * @type {Object.<string, import('api').APIResponse>}
  */
 const clients = {};
 
