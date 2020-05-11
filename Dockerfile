@@ -7,7 +7,7 @@ COPY package-lock.json package-lock.json
 
 RUN npm i
 
-COPY ./ .
+COPY . .
 
 EXPOSE 7070
 

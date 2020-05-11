@@ -34,3 +34,15 @@ jobs:
           tag_with_ref: true
           add_git_labels: true
           push: ${{ contains(github.ref, 'master') }}
+      
+      - name: Integration tests
+        run: |
+          docker network create integration
+          echo "Starting influxdb..."
+          docker run -d --net integration --name influx influxdb:latest
+          echo "Starting $(docker image ls --format "{{.Repository}}:{{.Tag}}" | grep acouvreur/ssh-log-to-influx)"
+          docker run -d --net integration --name sshlogtoinflux -p 7070:7070 -e INFLUX_URL=influx -e INFLUX_DB=integration $(docker image ls --format "{{.Repository}}:{{.Tag}}" | grep acouvreur/ssh-log-to-influx)
+          sleep 1s
+          echo "Failed password for username from 213.111.245.224 port 61832 ssh2" - | netcat 127.0.0.1 7070
+          sleep 1s
+          [ $(docker inspect -f '{{.State.Running}}' sshlogtoinflux) == "true" ]
