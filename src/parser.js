@@ -16,12 +16,7 @@
  */
 const parseAuthFailedMessage = (message) => {
     const regex = /\w+ \w+ \w+ ?\w+ ?\w+ (?<username>\w+) \w+ (?<ip>.*) \w+ (?<port>\w+) \w+/;
-    const parsed = regex.exec(message);
-    if(parsed) {
-      return parsed.groups;
-    } else {
-      return null;
-    }
-} 
+    return regex.exec(message)?.groups;
+}
 
 export default parseAuthFailedMessage;

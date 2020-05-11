@@ -2,23 +2,16 @@ version: "3.7"
 
 services:
   ssh-log-to-influx:
-    image: acouvreur/ssh-log-to-influx
+    image: rolfrander/geohashlog
     build: ./
     restart: always
     environment:
       - INFLUX_URL=influxdb
-      - INFLUX_DB=telegraf
-      - NODE_TLS_REJECT_UNAUTHORIZED=0
+      - INFLUX_DB=geoloc
       - INFLUX_PROTOCOL=https
-      - INFLUX_USER=$INFLUX_USER
-      - INFLUX_PWD=$INFLUX_PWD
+      - INFLUX_USER
+      - INFLUX_PWD
       - DEBUG_LEVEL=debug
-    networks: 
-      - traefik
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
     ports:
       - 7070:7070/tcp
-
-networks:
-  traefik:
-    external: true
-    name: traefik
