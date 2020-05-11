@@ -5,12 +5,17 @@ services:
     image: acouvreur/ssh-log-to-influx
     build: ./
     restart: always
-    environment: 
+    environment:
       - INFLUX_URL=influxdb
       - INFLUX_DB=telegraf
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
+      - INFLUX_PROTOCOL=https
+      - INFLUX_USER=$INFLUX_USER
+      - INFLUX_PWD=$INFLUX_PWD
+      - DEBUG_LEVEL=debug
     networks: 
       - traefik
-    ports: 
+    ports:
       - 7070:7070/tcp
 
 networks:

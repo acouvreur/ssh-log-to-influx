@@ -2,12 +2,12 @@ import log4js from 'log4js'
 import Axios from 'axios';
 
 let logger = log4js.getLogger('geohash');
-logger.level = 'api';
+logger.level = process.env.DEBUG_LEVEL;
 
 const API_URL = 'http://ip-api.com/json/'
 
 /**
- * 
+ *
  * Memoization to prevent API Calls for the same IP
  * @type {Object.<string, APIResponse>}
  */
@@ -29,14 +29,14 @@ const clients = {};
  * @property {string} org
  * @property {string} as
  * @property {string} query
- * 
- * @param {string} ip 
+ *
+ * @param {string} ip
  * @returns {Promise<APIResponse>}
  */
 async function retrieveLocationFromAPI(ip) {
 
     const {data, status, statusText} = await Axios.get(`${API_URL}/${ip}`)
-    if(status !== 200 || data.status !== 'success') {
+    if(!data || status !== 200 || data.status !== 'success') {
         logger.error(`Unsuccessful request (${status}): ${statusText}`, data)
         throw new Error(`Unsuccessful request (${status}): ${data}`)
     }
@@ -57,7 +57,7 @@ async function retrieveLocationFromAPI(ip) {
 
 
 /**
- * @param {string} ip 
+ * @param {string} ip
  * @returns {Promise<APIResponse>}
  */
 async function doApiCall(ip) {
@@ -76,7 +76,7 @@ async function doApiCall(ip) {
         logger.error(e);
 		return null
 	}
-	
+
 }
 
 export default doApiCall
