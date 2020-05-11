@@ -1,4 +1,3 @@
-import axios from 'axios'
 import log4js from 'log4js'
 import Axios from 'axios';
 
