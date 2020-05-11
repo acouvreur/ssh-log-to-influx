@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   ssh-log-to-influx:
-    image: acouvreur/ssh-log-to-influx
+    image: rolfrander/geohashlog
     build: ./
     restart: always
     environment:
