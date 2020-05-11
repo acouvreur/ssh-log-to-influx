@@ -5,7 +5,9 @@ on:
       - "*.md"
     branches:
       - master
-    pull_request:
+  pull_request:
+    paths-ignore:
+      - "*.md"
 env:
   DOCKER_REPOSITORY: acouvreur/ssh-log-to-influx
   CI: true
