@@ -6,13 +6,16 @@ import parser from './parser'
 import doApiCall from './api';
 
 let logger = log4js.getLogger();
-logger.level = 'debug';
+logger.level = process.env.DEBUG_LEVEL || 'warn';
 
 const Influx = require('influx');
 // InfluxDB Initialization.
 const influx = new Influx.InfluxDB({
 	host: process.env.INFLUX_URL,
-	database: process.env.INFLUX_DB
+	database: process.env.INFLUX_DB,
+	username: process.env.INFLUX_USER,
+	password: process.env.INFLUX_PWD,
+	protocol: process.env.INFLUX_PROTOCOL || 'http'
 });
 
 influx.createDatabase(process.env.INFLUX_DB);
@@ -26,45 +29,48 @@ server.on('connection', (socket) => {
 	logger.info(`CONNECTED: ${socket.remoteAddress}:${socket.remotePort}`)
 
 	socket.on('data', async (data) => {
-		
+
 		socket.end()
 		socket.destroy()
 
-		logger.debug('Received data', data.toString())
+		try {
+			logger.debug('Received data', data.toString())
 
-		const {ip, port, username} = parser(data.toString())
-		logger.debug(`Parsed ${username} ${ip} ${port}`)
+			const {ip, port, username} = parser(data.toString())
+			logger.debug(`Parsed ${username} ${ip} ${port}`)
 
-		const ipLocation = await doApiCall(ip);
+			const ipLocation = await doApiCall(ip);
 
-		if(!ipLocation) {
-			logger.error('No data retrieved, cannot continue')
-			return
-		}
-
-		const geohashed = ngeohash.encode(ipLocation.lat, ipLocation.lon);
-		logger.debug(`Geohashing with lat: ${ipLocation.lat}, lon: ${ipLocation.lon}: ${geohashed}`)
-
-		// Remove lon and lat from tags
-		const {lon, lat, ...others} = ipLocation;
-		
-		influx.writePoints([
-			{
-				measurement: 'geossh',
-				fields: {
-					value: 1
-				},
-				tags: {
-					geohash: geohashed,
-					username,
-					port,
-					ip,
-					location: `${ipLocation.regionName}, ${ipLocation.city}`,
-					...others
-				}
+			if(!ipLocation) {
+				logger.error('No data retrieved, cannot continue')
+				return
 			}
-		]);
 
+			const geohashed = ngeohash.encode(ipLocation.lat, ipLocation.lon);
+			logger.debug(`Geohashing with lat: ${ipLocation.lat}, lon: ${ipLocation.lon}: ${geohashed}`)
+
+			// Remove lon and lat from tags
+			const {lon, lat, ...others} = ipLocation;
+
+			influx.writePoints([
+				{
+					measurement: 'geossh',
+					fields: {
+						value: 1
+					},
+					tags: {
+						geohash: geohashed,
+						username,
+						port,
+						ip,
+						location: `${ipLocation.regionName}, ${ipLocation.city}`,
+						...others
+					}
+				}
+			]);
+		} catch(e) {
+			logger.warn(e)
+		}
 	})
 
 	socket.on('close', () => {
