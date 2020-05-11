@@ -8,10 +8,7 @@ services:
     environment:
       - INFLUX_URL=influxdb
       - INFLUX_DB=geoloc
-      - INFLUX_PROTOCOL=https
       - INFLUX_USER
       - INFLUX_PWD
-      - DEBUG_LEVEL=debug
-      - NODE_TLS_REJECT_UNAUTHORIZED=0
     ports:
       - 7070:7070/tcp
