@@ -46,3 +46,4 @@ jobs:
           echo "Failed password for username from 213.111.245.224 port 61832 ssh2" - | netcat 127.0.0.1 7070
           sleep 1s
           [ $(docker inspect -f '{{.State.Running}}' sshlogtoinflux) == "true" ]
+          docker logs sshlogtoinflux
