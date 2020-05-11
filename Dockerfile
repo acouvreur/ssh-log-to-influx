@@ -5,9 +5,9 @@ WORKDIR /app
 COPY package.json package.json
 COPY package-lock.json package-lock.json
 
-RUN npm i --only=production
+RUN npm i
 
-COPY ./src ./src
+COPY ./ .
 
 EXPOSE 7070
 
