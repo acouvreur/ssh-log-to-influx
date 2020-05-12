@@ -23,7 +23,7 @@ Add this under `/etc/rsyslog.conf` to forward ssh auth failures to local server 
 template(name="OnlyMsg" type="string" string="%msg:::drop-last-lf%\n")
 if $programname == 'sshd' then {
    if $msg startswith ' Failed' then {
-      action(type="omfwd" target="127.0.0.1" port="7070" protocol="tcp" template="OnlyMsg") 
+      action(type="omfwd" target="127.0.0.1" port="7070" protocol="tcp" template="OnlyMsg")
    }
 }
 ```
@@ -48,3 +48,11 @@ if $programname == 'sshd' then {
 2. `netcat localhost 7070`
 3. type: `Failed password for username from 206.253.167.10 port 11111 ssh2`
 4. Data should be parsed and added
+
+## Optional configuration
+
+* `INFLUX_PROTOCOL`: http or https, default is http. If you want to skip certificate
+  validation, set `NODE_TLS_REJECT_UNAUTHORIZED` to 0, but don't do this without
+  understanding the implications.
+* `INFLUX_USER` and `INFLUX_PWD`: authentication for influx
+* `DEBUG_LEVEL`: level of logging in log4js, default is "info".

@@ -6,16 +6,22 @@ import parser from './parser'
 import doApiCall from './api';
 
 let logger = log4js.getLogger();
-logger.level = 'debug';
+logger.level = process.env.DEBUG_LEVEL || 'info';
 
 const Influx = require('influx');
 // InfluxDB Initialization.
 const influx = new Influx.InfluxDB({
 	host: process.env.INFLUX_URL,
-	database: process.env.INFLUX_DB
+	database: process.env.INFLUX_DB,
+	username: process.env.INFLUX_USER || '',
+	password: process.env.INFLUX_PWD || '',
+	protocol: process.env.INFLUX_PROTOCOL || 'http'
 });
 
-influx.createDatabase(process.env.INFLUX_DB);
+influx.createDatabase(process.env.INFLUX_DB).catch((error) => {
+	// if the database exists or the user doesn't have sufficient privileges, this will fail
+	logger.warn(error.message);
+});
 
 const port = process.env.PORT || 7070;
 
@@ -26,7 +32,7 @@ server.on('connection', (socket) => {
 	logger.info(`CONNECTED: ${socket.remoteAddress}:${socket.remotePort}`)
 
 	socket.on('data', async (data) => {
-		
+
 		socket.end()
 		socket.destroy()
 
@@ -47,7 +53,7 @@ server.on('connection', (socket) => {
 
 		// Remove lon and lat from tags
 		const {lon, lat, ...others} = ipLocation;
-		
+
 		influx.writePoints([
 			{
 				measurement: 'geossh',
@@ -64,7 +70,6 @@ server.on('connection', (socket) => {
 				}
 			}
 		]);
-
 	})
 
 	socket.on('close', () => {

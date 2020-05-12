@@ -5,15 +5,10 @@ services:
     image: acouvreur/ssh-log-to-influx
     build: ./
     restart: always
-    environment: 
+    environment:
       - INFLUX_URL=influxdb
-      - INFLUX_DB=telegraf
-    networks: 
-      - traefik
-    ports: 
+      - INFLUX_DB=geoloc
+      - INFLUX_USER
+      - INFLUX_PWD
+    ports:
       - 7070:7070/tcp
-
-networks:
-  traefik:
-    external: true
-    name: traefik
