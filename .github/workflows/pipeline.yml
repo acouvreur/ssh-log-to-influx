@@ -37,6 +37,7 @@ jobs:
       
       - name: Integration tests
         run: |
+          set -ex
           docker network create integration
           echo "Starting influxdb..."
           docker run -d --net integration --name influx influxdb:latest
