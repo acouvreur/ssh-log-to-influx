@@ -4,6 +4,14 @@
 
 Thanks to Schkn for its original post https://devconnected.com/geolocating-ssh-hackers-in-real-time/
 
+## Recommendations 
+
+As servers gets spammed more and more, you should protect them by :
+- disabling root authentication
+- using fail2ban
+- expose another port to the real word instead of the default 22 (it will filter most default spammers)
+- disabling password authentication and use public key authentication
+
 ## Preview
 
 ![Dashboard](./dashboard.png)
