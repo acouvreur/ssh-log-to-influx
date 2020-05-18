@@ -8,6 +8,8 @@ Thanks to Schkn for its original post https://devconnected.com/geolocating-ssh-h
 
 ![Dashboard](./dashboard.png)
 
+[Grafana dashboard](https://grafana.com/grafana/dashboards/12323) id : __12323__
+
 ## Prerequisites
 
 - An InfluxDB instance (or use docker-compose.standalone.yml)
