@@ -36,11 +36,16 @@ if $programname == 'sshd' then {
 
 `docker-compose -f docker-compose.standalone.yml up`
 
-### As a Docker service (will restart on failure)
+### With an external InfluxDB
 
-1. Change INFLUX_URL
-2. Change INFLUX_DB
-3. Change network if needed to access an Influx database within a Docker network
+- `INFLUX_URL` *deprecated, use INFLUX_HOST instead*
+- `INFLUX_HOST` Influx (FQDN) host to connect to.
+- `INFLUX_PORT` *optional* *default: 8086* Influx port to connect to.
+- `INFLUX_USER` *optional* *default: root* Username for connecting to the database.
+- `INFLUX_PWD` *optional* *default: root* Password for connecting to the database.
+- `INFLUX_DB` Database to operate on.
+
+*Note: You can use the Docker network FQDN if you put the service in the same Docker network as your InfluxDB instance. INFLUX_HOST will be `influx` if your service's name is influx.*
 
 `docker-compose up -d`
 
@@ -51,10 +56,7 @@ if $programname == 'sshd' then {
 3. type: `Failed password for username from 206.253.167.10 port 11111 ssh2`
 4. Data should be parsed and added
 
-## Optional configuration
+## Debug configuration
 
-* `INFLUX_PROTOCOL`: http or https, default is http. If you want to skip certificate
-  validation, set `NODE_TLS_REJECT_UNAUTHORIZED` to 0, but don't do this without
-  understanding the implications.
-* `INFLUX_USER` and `INFLUX_PWD`: authentication for influx
+* If you want to skip certificate validation, set `NODE_TLS_REJECT_UNAUTHORIZED` to 0, but don't do this without understanding the implications.
 * `DEBUG_LEVEL`: level of logging in log4js, default is "info".

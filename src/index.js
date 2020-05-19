@@ -11,11 +11,12 @@ logger.level = process.env.DEBUG_LEVEL || 'info';
 const Influx = require('influx');
 // InfluxDB Initialization.
 const influx = new Influx.InfluxDB({
-	host: process.env.INFLUX_URL,
 	database: process.env.INFLUX_DB,
-	username: process.env.INFLUX_USER || '',
-	password: process.env.INFLUX_PWD || '',
-	protocol: process.env.INFLUX_PROTOCOL || 'http'
+	protocol: process.env.INFLUX_PROTOCOL || 'http',
+	host: process.env.INFLUX_HOST || process.env.INFLUX_URL,
+	port: parseInt(process.env.INFLUX_PORT) || 8086,
+	username: process.env.INFLUX_USER || 'root',
+	password: process.env.INFLUX_PWD || 'root',
 });
 
 influx.createDatabase(process.env.INFLUX_DB).catch((error) => {
