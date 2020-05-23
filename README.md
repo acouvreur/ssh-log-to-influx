@@ -38,7 +38,8 @@ if $programname == 'sshd' then {
 
 ### With an external InfluxDB
 
-- `INFLUX_URL` *deprecated, use INFLUX_HOST instead*
+- ~~`INFLUX_URL`~~ *deprecated, use INFLUX_HOST instead*
+- `INFLUX_PROTOCOL` *optional* *default: http* Protocol to use, http or https.
 - `INFLUX_HOST` Influx (FQDN) host to connect to.
 - `INFLUX_PORT` *optional* *default: 8086* Influx port to connect to.
 - `INFLUX_USER` *optional* *default: root* Username for connecting to the database.
