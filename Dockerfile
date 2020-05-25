@@ -4,6 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 
 FROM base AS build
+RUN apk add --no-cache --virtual .gyp python make g++
 # install dependencies
 RUN npm ci
 # build sources
