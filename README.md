@@ -20,11 +20,26 @@ Thanks to Schkn for its original post https://devconnected.com/geolocating-ssh-h
 ## Rsyslog configuration
 
 Add this under `/etc/rsyslog.conf` to forward ssh auth failures to local server :
+*Note: You should only add one at this moment, I'm working on a solution that can handles all modes*
+
+### I have 'PasswordAuthentication' activated
 
 ```
 template(name="OnlyMsg" type="string" string="%msg:::drop-last-lf%\n")
 if $programname == 'sshd' then {
    if $msg startswith ' Failed' then {
+      action(type="omfwd" target="127.0.0.1" port="7070" protocol="tcp" template="OnlyMsg")
+   }
+}
+```
+
+
+### I have 'PubkeyAuthentication' activated
+
+```
+template(name="OnlyMsg" type="string" string="%msg:::drop-last-lf%\n")
+if $programname == 'sshd' then {
+   if $msg startswith ' Invalid' then {
       action(type="omfwd" target="127.0.0.1" port="7070" protocol="tcp" template="OnlyMsg")
    }
 }

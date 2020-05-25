@@ -15,8 +15,18 @@
  * @returns {AuthMessageEntry}
  */
 const parseAuthFailedMessage = (message) => {
-    const regex = /\w+ \w+ \w+ ?\w+ ?\w+ (?<username>\w+) \w+ (?<ip>.*) \w+ (?<port>\w+) \w+/;
-    return regex.exec(message)?.groups;
+    
+    message = message.trim();
+    console.log(message)
+
+    if(message.startsWith('Failed')) {
+        const regex = /\w+ \w+ \w+ ?\w+ ?\w+ (?<username>\w+) \w+ (?<ip>.*) \w+ (?<port>\w+) \w+/;
+        return regex.exec(message)?.groups;
+    } else if(message.startsWith('Invalid')) {
+        const regex = /\w+ \w+ (?<username>\w+) \w+ (?<ip>.*) \w+ (?<port>\w+)/;
+        return regex.exec(message)?.groups;
+    }
+    return null;
 }
 
 export default parseAuthFailedMessage;
