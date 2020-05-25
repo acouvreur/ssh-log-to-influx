@@ -30,6 +30,7 @@ jobs:
       
       - name: Integration tests
         run: |
+          set -ex
           docker network create integration
           echo "Starting influxdb..."
           docker run -d --net integration --name influx influxdb:latest
@@ -38,8 +39,8 @@ jobs:
           sleep 1s
           echo "Failed password for username from 213.111.245.224 port 61832 ssh2" - | netcat 127.0.0.1 7070
           sleep 1s
-          [ $(docker inspect -f '{{.State.Running}}' sshlogtoinflux) == "true" ]
           docker logs sshlogtoinflux
+          [ $(docker inspect -f '{{.State.Running}}' sshlogtoinflux) == "true" ]
 
       - name: install buildx
         if: github.ref == 'refs/heads/master'
