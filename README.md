@@ -10,6 +10,10 @@ Thanks to Schkn for its original post https://devconnected.com/geolocating-ssh-h
 
 [Grafana dashboard](https://grafana.com/grafana/dashboards/12323) id : __12323__
 
+Multiarch supported `linux/amd64,linux/arm/v7,linux/arm64`
+
+`docker run -e INFLUX_URL=influxdb -e INFLUX_DB=geoloc -p 7070:7070 --name ssh-log-to-influx acouvreur/ssh-log-to-influx`
+
 ## Prerequisites
 
 - An InfluxDB instance (or use docker-compose.standalone.yml)
