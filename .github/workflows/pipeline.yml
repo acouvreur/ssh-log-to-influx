@@ -23,27 +23,35 @@ jobs:
         run: npm ci
 
       - name: Test
-        run: npm test
+        run: npm test  
 
-      - name: Docker build and push
-        uses: docker/build-push-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: ${{ env.DOCKER_REPOSITORY }}
-          tag_with_ref: true
-          add_git_labels: true
-          push: ${{ contains(github.ref, 'master') }}
+      - name: Build docker
+        run: docker build -t acouvreur/ssh-log-to-influx:integration .
       
       - name: Integration tests
         run: |
           docker network create integration
           echo "Starting influxdb..."
           docker run -d --net integration --name influx influxdb:latest
-          echo "Starting $(docker image ls --format "{{.Repository}}:{{.Tag}}" | grep acouvreur/ssh-log-to-influx)"
-          docker run -d --net integration --name sshlogtoinflux -p 7070:7070 -e INFLUX_URL=influx -e INFLUX_DB=integration -e DEBUG_LEVEL=debug $(docker image ls --format "{{.Repository}}:{{.Tag}}" | grep acouvreur/ssh-log-to-influx)
+          echo "Starting acouvreur/ssh-log-to-influx:integration"
+          docker run -d --net integration --name sshlogtoinflux -p 7070:7070 -e INFLUX_URL=influx -e INFLUX_DB=integration -e DEBUG_LEVEL=debug acouvreur/ssh-log-to-influx:integration
           sleep 1s
           echo "Failed password for username from 213.111.245.224 port 61832 ssh2" - | netcat 127.0.0.1 7070
           sleep 1s
           [ $(docker inspect -f '{{.State.Running}}' sshlogtoinflux) == "true" ]
           docker logs sshlogtoinflux
+
+      - name: install buildx
+        if: github.ref == 'refs/heads/master'
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          version: latest
+
+      - name: login
+        if: github.ref == 'refs/heads/master'
+        run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
+  
+      - name: build the image
+        if: github.ref == 'refs/heads/master'
+        run: docker buildx build --push --tag ${{ env.DOCKER_REPOSITORY }}:latest --platform linux/amd64,linux/arm/v7,linux/arm64 . 
