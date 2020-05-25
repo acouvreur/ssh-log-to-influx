@@ -1,14 +1,18 @@
-FROM node:12-slim
-
+FROM node:10-alpine AS base
 WORKDIR /app
 
-COPY package.json package.json
-COPY package-lock.json package-lock.json
+COPY package*.json ./
 
-RUN npm i
-
+FROM base AS build
+# install dependencies
+RUN npm ci
+# build sources
 COPY . .
+RUN npm run build
 
+
+FROM base AS release
+RUN npm ci --production
+COPY --from=build /app/dist ./dist
 EXPOSE 7070
-
-CMD ["npm", "start"]
+CMD ["node", "dist/index.js"]
