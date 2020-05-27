@@ -39,8 +39,7 @@ server.on('connection', (socket) => {
 	socket.on('data', async (data) => {
 
 		socket.end()
-		socket.destroy()
-
+		
 		logger.debug('Received data', data.toString())
 
 		const {ip, port, username} = parser(data.toString())
