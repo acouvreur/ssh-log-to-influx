@@ -5,6 +5,7 @@ const IPv6AuthMessageInvalidUsername = 'Failed password for invalid user usernam
 const IPv4AuthMessage = 'Failed password for username from 192.168.0.0 port 61832 ssh2'
 const IPv4AuthMessageInvalidUsername = 'Failed password for invalid user username from 192.168.0.0 port 61832 ssh2'
 const InvalidUser = 'Invalid user username from 192.168.0.0 port 38124'
+const DisconnectedFromAuthenticating = 'Disconnected from authenticating user root 170.150.72.28 port 60520 [preauth]'
 
 describe('A parser', () => {
     it('should extract username from \'Failed password for username from 2a01:cb1d:620:7a00:6cb4:1bd9:29b3:a9a0 port 61832 ssh2\'', () => {
@@ -49,6 +50,18 @@ describe('A parser', () => {
 
     it('should extract port from \'Invalid user username from 192.168.0.0 port 38124\'', () => {
         expect(parseAuthFailedMessage(InvalidUser).port).toEqual('38124')
+    })
+
+    it('should extract username from \'Disconnected from authenticating user root 170.150.72.28 port 60520 [preauth]\'', () => {
+        expect(parseAuthFailedMessage(DisconnectedFromAuthenticating).username).toEqual('root')
+    })
+
+    it('should extract IP from \'Disconnected from authenticating user root 170.150.72.28 port 60520 [preauth]\'', () => {
+        expect(parseAuthFailedMessage(DisconnectedFromAuthenticating).ip).toEqual('170.150.72.28')
+    })
+
+    it('should extract port from \'Disconnected from authenticating user root 170.150.72.28 port 60520 [preauth]\'', () => {
+        expect(parseAuthFailedMessage(DisconnectedFromAuthenticating).port).toEqual('60520')
     })
 
 })

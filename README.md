@@ -45,6 +45,8 @@ template(name="OnlyMsg" type="string" string="%msg:::drop-last-lf%\n")
 if $programname == 'sshd' then {
    if $msg startswith ' Invalid' then {
       action(type="omfwd" target="127.0.0.1" port="7070" protocol="tcp" template="OnlyMsg")
+   } else if $msg startswith ' Disconnected from authenticating' then {
+      action(type="omfwd" target="127.0.0.1" port="7070" protocol="tcp" template="OnlyMsg")
    }
 }
 ```
