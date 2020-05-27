@@ -21,7 +21,11 @@ const influx = new Influx.InfluxDB({
 
 influx.createDatabase(process.env.INFLUX_DB).catch((error) => {
 	// if the database exists or the user doesn't have sufficient privileges, this will fail
-	logger.warn(error.message);
+	logger.error(error.message)
+	if(error.message.includes('ENOTFOUND')) {
+		logger.error('Bye')
+		process.exit(1)
+	}
 });
 
 const port = process.env.PORT || 7070;
