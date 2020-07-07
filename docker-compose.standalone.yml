@@ -6,7 +6,7 @@ services:
     build: ./
     restart: always
     environment: 
-      - INFLUX_URL=influxdb
+      - INFLUX_HOST=influxdb
       - INFLUX_DB=telegraf
     ports: 
       - 7070:7070/tcp
