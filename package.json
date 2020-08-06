@@ -39,6 +39,6 @@
     "@babel/preset-env": "^7.11.0",
     "jest": "^26.2.2",
     "@babel/polyfill": "^7.10.1",
-    "@types/jest": "^26.0.8"
+    "@types/jest": "^26.0.9"
   }
 }
