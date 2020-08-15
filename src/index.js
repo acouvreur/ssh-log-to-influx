@@ -22,7 +22,7 @@ const influx = new Influx.InfluxDB({
 influx.createDatabase(process.env.INFLUX_DB).catch((error) => {
 	// if the database exists or the user doesn't have sufficient privileges, this will fail
 	logger.error(error.message)
-	if(error.message.includes('ENOTFOUND')) {
+	if (error.message.includes('ENOTFOUND')) {
 		logger.error('Bye')
 		process.exit(1)
 	}
@@ -37,43 +37,46 @@ server.on('connection', (socket) => {
 	logger.info(`CONNECTED: ${socket.remoteAddress}:${socket.remotePort}`)
 
 	socket.on('data', async (data) => {
+		try {
+			socket.end()
 
-		socket.end()
-		
-		logger.debug('Received data', data.toString())
+			logger.debug('Received data', data.toString())
 
-		const {ip, port, username} = parser(data.toString())
-		logger.debug(`Parsed ${username} ${ip} ${port}`)
+			const { ip, port, username } = parser(data.toString())
+			logger.debug(`Parsed ${username} ${ip} ${port}`)
 
-		const ipLocation = await doApiCall(ip);
+			const ipLocation = await doApiCall(ip);
 
-		if(!ipLocation) {
-			logger.error('No data retrieved, cannot continue')
-			return
-		}
-
-		const geohashed = ngeohash.encode(ipLocation.lat, ipLocation.lon);
-		logger.debug(`Geohashing with lat: ${ipLocation.lat}, lon: ${ipLocation.lon}: ${geohashed}`)
-
-		// Remove lon and lat from tags
-		const {lon, lat, ...others} = ipLocation;
-
-		influx.writePoints([
-			{
-				measurement: 'geossh',
-				fields: {
-					value: 1
-				},
-				tags: {
-					geohash: geohashed,
-					username,
-					port,
-					ip,
-					location: `${ipLocation.regionName}, ${ipLocation.city}`,
-					...others
-				}
+			if (!ipLocation) {
+				logger.error('No data retrieved, cannot continue')
+				return
 			}
-		]);
+
+			const geohashed = ngeohash.encode(ipLocation.lat, ipLocation.lon);
+			logger.debug(`Geohashing with lat: ${ipLocation.lat}, lon: ${ipLocation.lon}: ${geohashed}`)
+
+			// Remove lon and lat from tags
+			const { lon, lat, ...others } = ipLocation;
+
+			influx.writePoints([
+				{
+					measurement: 'geossh',
+					fields: {
+						value: 1
+					},
+					tags: {
+						geohash: geohashed,
+						username,
+						port,
+						ip,
+						location: `${ipLocation.regionName}, ${ipLocation.city}`,
+						...others
+					}
+				}
+			]);
+		} catch (e) {
+			logger.error('An error has occurred processing one connection:', e.message)
+		}
 	})
 
 	socket.on('close', () => {
