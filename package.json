@@ -31,7 +31,7 @@
     "ngeohash": "^0.6.3"
   },
   "devDependencies": {
-    "@babel/cli": "^7.10.3",
+    "@babel/cli": "^7.11.5",
     "@babel/core": "^7.11.0",
     "@babel/node": "^7.10.3",
     "@babel/plugin-transform-modules-commonjs": "^7.10.4",
