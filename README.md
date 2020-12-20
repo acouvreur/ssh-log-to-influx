@@ -52,7 +52,6 @@ _Note: You can use the Docker network FQDN if you put the service in the same Do
 ## Rsyslog configuration
 
 Add this under `/etc/rsyslog.conf` to forward ssh auth failures to local server :
-_Note: You should only add one at this moment, I'm working on a solution that can handles all modes_
 
 ### I have 'PasswordAuthentication' activated
 
