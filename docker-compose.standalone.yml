@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   ssh-log-to-influx:
-    image: acouvreur/ssh-log-to-influx
+    image: acouvreur/ssh-log-to-influx:latest
     build: ./
     restart: always
     environment: 
@@ -23,9 +23,9 @@ services:
   # Grafana : analytics and monitoring
   #----------------------------------------------#
   grafana:
-    image: "grafana/grafana:master"
+    image: "grafana/grafana:latest"
     environment: 
-      - GF_INSTALL_PLUGINS=grafana-worldmap-panel
+      - GF_INSTALL_PLUGINS=grafana-worldmap-panel,grafana-piechart-panel
     ports: 
       - 3000:3000
     volumes:

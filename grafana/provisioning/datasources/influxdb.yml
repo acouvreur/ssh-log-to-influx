@@ -6,8 +6,9 @@ datasources:
     access: proxy
     database: telegraf
     user: telegraf
-    password: grafana
     url: http://influxdb:8086
     isDefault: true
     jsonData:
       httpMode: GET
+    secureJsonData:
+      password: grafana
