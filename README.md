@@ -1,6 +1,8 @@
 # Visualize bruteforce SSH attacker's location in real time
 
 ![Build, test and deploy](https://github.com/acouvreur/ssh-log-to-influx/workflows/Build,%20test%20and%20deploy/badge.svg)
+![Docker Image Size](https://img.shields.io/docker/image-size/acouvreur/ssh-log-to-influx)
+![Docker Pulls](https://img.shields.io/docker/pulls/acouvreur/ssh-log-to-influx)
 
 Thanks to Schkn for its original post https://devconnected.com/geolocating-ssh-hackers-in-real-time/
 
@@ -8,7 +10,7 @@ Thanks to Schkn for its original post https://devconnected.com/geolocating-ssh-h
 
 ![Dashboard](./dashboard.png)
 
-[Grafana dashboard](https://grafana.com/grafana/dashboards/12323) id : __12323__
+[Grafana dashboard](https://grafana.com/grafana/dashboards/12323) id : **12323**
 
 Multiarch supported `linux/amd64,linux/arm/v7,linux/arm64`
 
@@ -24,7 +26,7 @@ Multiarch supported `linux/amd64,linux/arm/v7,linux/arm64`
 ## Rsyslog configuration
 
 Add this under `/etc/rsyslog.conf` to forward ssh auth failures to local server :
-*Note: You should only add one at this moment, I'm working on a solution that can handles all modes*
+_Note: You should only add one at this moment, I'm working on a solution that can handles all modes_
 
 ### I have 'PasswordAuthentication' activated
 
@@ -36,7 +38,6 @@ if $programname == 'sshd' then {
    }
 }
 ```
-
 
 ### I have 'PubkeyAuthentication' activated
 
@@ -59,15 +60,15 @@ if $programname == 'sshd' then {
 
 ### With an external InfluxDB
 
-- ~~`INFLUX_URL`~~ *deprecated, use INFLUX_HOST instead*
-- `INFLUX_PROTOCOL` *optional* *default: http* Protocol to use, http or https.
+- ~~`INFLUX_URL`~~ _deprecated, use INFLUX_HOST instead_
+- `INFLUX_PROTOCOL` _optional_ _default: http_ Protocol to use, http or https.
 - `INFLUX_HOST` Influx (FQDN) host to connect to.
-- `INFLUX_PORT` *optional* *default: 8086* Influx port to connect to.
-- `INFLUX_USER` *optional* *default: root* Username for connecting to the database.
-- `INFLUX_PWD` *optional* *default: root* Password for connecting to the database.
+- `INFLUX_PORT` _optional_ _default: 8086_ Influx port to connect to.
+- `INFLUX_USER` _optional_ _default: root_ Username for connecting to the database.
+- `INFLUX_PWD` _optional_ _default: root_ Password for connecting to the database.
 - `INFLUX_DB` Database to operate on.
 
-*Note: You can use the Docker network FQDN if you put the service in the same Docker network as your InfluxDB instance. INFLUX_HOST will be `influx` if your service's name is influx.*
+_Note: You can use the Docker network FQDN if you put the service in the same Docker network as your InfluxDB instance. INFLUX_HOST will be `influx` if your service's name is influx._
 
 `docker-compose up -d`
 
@@ -80,5 +81,5 @@ if $programname == 'sshd' then {
 
 ## Debug configuration
 
-* If you want to skip certificate validation, set `NODE_TLS_REJECT_UNAUTHORIZED` to 0, but don't do this without understanding the implications.
-* `DEBUG_LEVEL`: level of logging in log4js, default is "info".
+- If you want to skip certificate validation, set `NODE_TLS_REJECT_UNAUTHORIZED` to 0, but don't do this without understanding the implications.
+- `DEBUG_LEVEL`: level of logging in log4js, default is "info".
