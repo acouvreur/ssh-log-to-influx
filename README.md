@@ -23,6 +23,32 @@ Multiarch supported `linux/amd64,linux/arm/v7,linux/arm64`
 - Docker
 - Rsyslog
 
+## Getting started
+
+### With a bundled InfluxDB and Grafana
+
+`docker-compose -f docker-compose.standalone.yml up`
+
+### With an external InfluxDB
+
+- `INFLUX_PROTOCOL` _optional_ _default: http_ Protocol to use, http or https.
+- `INFLUX_HOST` Influx (FQDN) host to connect to.
+- `INFLUX_PORT` _optional_ _default: 8086_ Influx port to connect to.
+- `INFLUX_USER` _optional_ _default: root_ Username for connecting to the database.
+- `INFLUX_PWD` _optional_ _default: root_ Password for connecting to the database.
+- `INFLUX_DB` Database to operate on.
+
+_Note: You can use the Docker network FQDN if you put the service in the same Docker network as your InfluxDB instance. INFLUX_HOST will be `influx` if your service's name is influx._
+
+`docker-compose up -d`
+
+## Test the TCP server
+
+1. `docker-compose -f docker-compose.standalone.yml up`
+2. `netcat localhost 7070` or `ncat localhost 7070` with Git bash for Windows
+3. type: `Failed password for username from 206.253.167.10 port 11111 ssh2`
+4. Data should be parsed and added
+
 ## Rsyslog configuration
 
 Add this under `/etc/rsyslog.conf` to forward ssh auth failures to local server :
@@ -51,33 +77,6 @@ if $programname == 'sshd' then {
    }
 }
 ```
-
-## Start the TCP server
-
-### With a bundled InfluxDB and Grafana
-
-`docker-compose -f docker-compose.standalone.yml up`
-
-### With an external InfluxDB
-
-- ~~`INFLUX_URL`~~ _deprecated, use INFLUX_HOST instead_
-- `INFLUX_PROTOCOL` _optional_ _default: http_ Protocol to use, http or https.
-- `INFLUX_HOST` Influx (FQDN) host to connect to.
-- `INFLUX_PORT` _optional_ _default: 8086_ Influx port to connect to.
-- `INFLUX_USER` _optional_ _default: root_ Username for connecting to the database.
-- `INFLUX_PWD` _optional_ _default: root_ Password for connecting to the database.
-- `INFLUX_DB` Database to operate on.
-
-_Note: You can use the Docker network FQDN if you put the service in the same Docker network as your InfluxDB instance. INFLUX_HOST will be `influx` if your service's name is influx._
-
-`docker-compose up -d`
-
-## Test the TCP server
-
-1. `docker-compose -f docker-compose.standalone.yml up`
-2. `netcat localhost 7070`
-3. type: `Failed password for username from 206.253.167.10 port 11111 ssh2`
-4. Data should be parsed and added
 
 ## Debug configuration
 
