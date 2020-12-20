@@ -4,7 +4,9 @@
 ![Docker Image Size](https://img.shields.io/docker/image-size/acouvreur/ssh-log-to-influx)
 ![Docker Pulls](https://img.shields.io/docker/pulls/acouvreur/ssh-log-to-influx)
 
-Thanks to Schkn for its original post https://devconnected.com/geolocating-ssh-hackers-in-real-time/
+Multiarch supported `linux/amd64,linux/arm/v7,linux/arm64` for Raspberry Pis 😄
+
+Thanks to **Schkn** for its original post https://devconnected.com/geolocating-ssh-hackers-in-real-time/
 
 ## Preview
 
@@ -12,16 +14,14 @@ Thanks to Schkn for its original post https://devconnected.com/geolocating-ssh-h
 
 [Grafana dashboard](https://grafana.com/grafana/dashboards/12323) id : **12323**
 
-Multiarch supported `linux/amd64,linux/arm/v7,linux/arm64`
-
-`docker run -e INFLUX_URL=influxdb -e INFLUX_DB=geoloc -p 7070:7070 --name ssh-log-to-influx acouvreur/ssh-log-to-influx`
+`docker run -e INFLUX_HOST=myinfluxdb.com -e INFLUX_DB=geoloc -p 7070:7070 acouvreur/ssh-log-to-influx`
 
 ## Prerequisites
 
-- An InfluxDB instance (or use docker-compose.standalone.yml)
-- A Grafana instance (or use docker-compose.standalone.yml)
 - Docker
 - Rsyslog
+- _An InfluxDB instance (or use docker-compose.standalone.yml)_
+- _A Grafana instance (or use docker-compose.standalone.yml)_
 
 ## Getting started
 
