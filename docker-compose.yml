@@ -2,8 +2,7 @@ version: "3.7"
 
 services:
   ssh-log-to-influx:
-    image: acouvreur/ssh-log-to-influx
-    build: ./
+    image: acouvreur/ssh-log-to-influx:latest
     restart: always
     environment:
       - INFLUX_URL=influxdb

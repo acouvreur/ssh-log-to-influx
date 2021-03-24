@@ -3,12 +3,11 @@ version: "3.7"
 services:
   ssh-log-to-influx:
     image: acouvreur/ssh-log-to-influx:latest
-    build: ./
     restart: always
-    environment: 
+    environment:
       - INFLUX_HOST=influxdb
       - INFLUX_DB=telegraf
-    ports: 
+    ports:
       - 7070:7070/tcp
 
   #----------------------------------------------#
@@ -24,16 +23,16 @@ services:
   #----------------------------------------------#
   grafana:
     image: "grafana/grafana:latest"
-    environment: 
+    environment:
       - GF_INSTALL_PLUGINS=grafana-worldmap-panel,grafana-piechart-panel
-    ports: 
+    ports:
       - 3000:3000
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning
       - ./grafana/config.ini:/etc/grafana/config.ini
       - ./grafana/dashboards:/var/lib/grafana/dashboards
-        
+
 volumes:
   influxdb_data:
   grafana_data:
