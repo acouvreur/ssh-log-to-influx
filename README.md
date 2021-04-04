@@ -38,7 +38,7 @@ Thanks to **Schkn** for its original post https://devconnected.com/geolocating-s
 - `INFLUX_PWD` _optional_ _default: root_ Password for connecting to the database.
 - `INFLUX_DB` Database to operate on.
 
-_Note: You can use the Docker network FQDN if you put the service in the same Docker network as your InfluxDB instance. INFLUX_HOST will be `influx` if your service's name is influx._
+_Note: You can use the Docker network FQDN if you put the service in the same Docker network as your InfluxDB instance. INFLUX_HOST will be `influx` if your service name is influx._
 
 `docker-compose up -d`
 
