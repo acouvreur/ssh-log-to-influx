@@ -14,7 +14,7 @@ services:
   # InfluxDB : time series database
   #----------------------------------------------#
   influxdb:
-    image: influxdb:latest
+    image: influxdb:1.8
     volumes:
       - influxdb_data:/var/lib/influxdb
 
