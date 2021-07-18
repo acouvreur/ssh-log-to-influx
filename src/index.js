@@ -19,14 +19,7 @@ const influx = new Influx.InfluxDB({
 	password: process.env.INFLUX_PWD || 'root',
 });
 
-influx.createDatabase(process.env.INFLUX_DB).catch((error) => {
-	// if the database exists or the user doesn't have sufficient privileges, this will fail
-	logger.error(error.message)
-	if (error.message.includes('ENOTFOUND')) {
-		logger.error('Bye')
-		process.exit(1)
-	}
-});
+createInfluxDatabase();
 
 const port = process.env.PORT || 7070;
 
@@ -87,3 +80,12 @@ server.on('connection', (socket) => {
 server.listen(port, () => {
 	logger.info(`TCP Server is running on port ${port}.`);
 });
+
+async function createInfluxDatabase() {
+	try {
+		await influx.createDatabase(process.env.INFLUX_DB);
+	} catch(error) {
+		logger.error(`Error creating InfluxDB database: ${error}. Retrying in 10s.`);
+		setTimeout(createInfluxDatabase, 10000);
+	}
+}
