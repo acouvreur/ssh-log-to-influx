@@ -36,9 +36,13 @@
     "@babel/node": "^7.10.3",
     "@babel/plugin-transform-modules-commonjs": "^7.10.4",
     "@babel/plugin-transform-runtime": "^7.11.0",
-    "@babel/preset-env": "^7.11.0",
-    "jest": "^26.2.2",
     "@babel/polyfill": "^7.10.1",
-    "@types/jest": "^26.0.8"
+    "@babel/preset-env": "^7.11.0",
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/git": "^9.0.0",
+    "@semantic-release/github": "^7.2.3",
+    "@types/jest": "^26.0.8",
+    "jest": "^26.2.2",
+    "semantic-release": "^17.4.4"
   }
 }
